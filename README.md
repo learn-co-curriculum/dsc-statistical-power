@@ -4,7 +4,7 @@
 ## Introduction
 
 
-We've started to investigate hypothesis testing, p-values and their use for accepting or rejecting the null hypothesis. Building upon this, we can develop a concept of the power of a statistical test, as the test's ability to detect a difference, when one exists. In the case of our coin flipping example, the power of our statistical test would be the probability of rejecting the null hypothesis "this coin is fair" when the coin was unfair. As you might assume, the power of this statistical test would thus depend on several factors including our p-value threshold for rejecting the null hypothesis, the size of our sample and the 'level of unfairness' of the coin in question.
+You've started to investigate hypothesis testing, p-values and their use for accepting or rejecting the null hypothesis. With this, the power of a statistical test measures an experiment's ability to detect a difference, when one exists. In the case of testing whether a coin is fair, the power of our statistical test would be the probability of rejecting the null hypothesis "this coin is fair" when the coin was unfair. As you might assume, the power of this statistical test would thus depend on several factors including our p-value threshold for rejecting the null hypothesis, the size of our sample and the 'level of unfairness' of the coin in question.
 
 ## Objectives
 
@@ -18,9 +18,15 @@ You will be able to:
 
 ## The Power of a Statistical Test
 
-The power of a statistical test is defined as the probability of rejecting the null hypothesis, given that it is indeed false. As with any probability, the power of a statistical test therefore ranges from 0 to 1, with 1 being a perfect test that gaurantees rejecting the null hypothesis when it is indeed false.
+The power of a statistical test is defined as the probability of rejecting the null hypothesis, given that it is indeed false. As with any probability, the power of a statistical test therefore ranges from 0 to 1, with 1 being a perfect test that gaurantees rejecting the null hypothesis when it is indeed false.  
 
-With that, let's recreate our previous coin flip simulation, and use it to plot some relationships between power, sample size, and our p-value cutoff.
+Intrinsically, this is related to $\beta$, the probability of type II errors. When designing a statistical test, a researcher will typically determine an acceptable $\alpha$, such as .05, the probability of type I errors. (Recall that type I errors are when the null-hypothesis is rejected when actually true.) From this given alpha value, an optimal threshold for rejecting the null-hypothesis can be determined. That is, for a given $\alpha$ value, you can calculate a threshold which maximizes the power of the test. For any given $\alpha$, $power = 1 - \beta$.
+
+
+
+> Note: Ideally, $\alpha$ and $\beta$ would both be minimized, but this is often costly, impracticle or impossible depending on the scenario and required sample sizes. 
+
+As discussed, $\alpha$, power and sample size are all related quantities. As an exploration of this, take a look at some plots of the power of a statistical test, given varying sample sizes.
 
 
 ```python
@@ -67,7 +73,7 @@ plt.xlabel('Number of Coin Flips')
 ![png](index_files/index_4_1.png)
 
 
-As you can see, the statistical power of this test is wonderful once we take a sample of just 20 flips! You can also imagine how this power might change if we require a p-value of .99 to reject the null hypothesis:
+As you can see, the statistical power of this test is wonderful once we take a sample of just 20 flips! You can also imagine how this power might change if you were to use a p-value of .99 to reject the null hypothesis:
 
 
 ```python
@@ -104,7 +110,7 @@ plt.xlabel('Number of Coin Flips')
 ![png](index_files/index_6_1.png)
 
 
-or if we are trying to detect a only slightly unfair coin:
+or if you were trying to detect a only slightly unfair coin:
 
 
 ```python
@@ -143,4 +149,4 @@ plt.xlabel('Number of Coin Flips')
 
 ## Summary
 
-In this lesson, we discussed the idea of "statistical power" and how sample size, p_value and effect size impact the power of an experiment. Remember, the power of a statistical test is the probability of rejecting the null hypothesis when it is indeed false.
+In this lesson, you learned about the idea of "statistical power" and how sample size, p_value and effect size impact the power of an experiment. Remember, the power of a statistical test is the probability of rejecting the null hypothesis when it is indeed false.
