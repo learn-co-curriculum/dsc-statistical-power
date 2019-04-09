@@ -26,7 +26,16 @@ Intrinsically, this is related to $\beta$, the probability of type II errors. Wh
 
 > Note: Ideally, $\alpha$ and $\beta$ would both be minimized, but this is often costly, impracticle or impossible depending on the scenario and required sample sizes. 
 
-As discussed, $\alpha$, power and sample size are all related quantities. As an exploration of this, take a look at some plots of the power of a statistical test, given varying sample sizes.
+## Effect Size
+
+The effect size is the magnitude of the difference you are testing between the two groups. Thus far, you've mainly been investigating the mean of a sample. For example, after flipping a coin n number of times, you've investigated using a t-test to determine whether the coin is a fair coin (p(heads)=0.5). To do this, you compare the mean of the sample to that of another sample, if comparing coins, or to a know theoretical distribution. Similarly, you might compare the mean income of a sample population to that of a census tract to determine if the populations are statistically different. In such cases, Cohen's D is typically the metric used as the effect size. Cohen's d is defined as:  
+$ d = \frac{m_1 - m_2}{sd}$ 
+
+That is the difference of the means divided by the standard deviation.
+
+## Power Analysis
+
+Since $\alpha$, power, sample size and effect size are all related quantities, you can take a look at some plots of the power of some t-tests, given varying sample sizes. This will allow you to develop a deeper understanding of how these quantities are related and what constitutes a convincing statistical test.
 
 
 ```python
@@ -36,6 +45,43 @@ import matplotlib.pyplot as plt
 import seaborn as sns 
 sns.set_style('darkgrid')
 %matplotlib inline
+```
+
+To start, imagine the scenario of detecting an unfair coin. With this, the null-hypothesis $H_0(heads) = 0.5$. From here, the power will depend on both the sample size and the effect size (that is the threshold for the alternative hypothesis). For example, if the alternative hypothesis has a large margin from the null-hypothesis such as $H_a(heads) = 0.8$, then the likelihood of rejecting the null-hypothesis is diminished; an unfair coin where $P(heads)=.6$ for example, is not apt to lead to the reject of the null-hypothesis in the current formulation. To demonstrate this, start by taking a look at the power curve below.
+
+
+```python
+#Power curve; x-axis - mu value, y-axis power
+```
+
+
+```python
+from statsmodels.stats.power import TTestIndPower, TTestPower
+```
+
+
+```python
+power_analysis = TTestIndPower()
+```
+
+
+```python
+power_analysis.plot_power?
+```
+
+
+```python
+sms.power.T
+```
+
+
+```python
+#Subplots figure; plot multiple curves simultaneously....
+```
+
+
+```python
+#Multiple colors/lines for varying sample sizes
 ```
 
 
@@ -70,7 +116,7 @@ plt.xlabel('Number of Coin Flips')
 
 
 
-![png](index_files/index_4_1.png)
+![png](index_files/index_13_1.png)
 
 
 As you can see, the statistical power of this test is wonderful once we take a sample of just 20 flips! You can also imagine how this power might change if you were to use a p-value of .99 to reject the null hypothesis:
@@ -107,7 +153,7 @@ plt.xlabel('Number of Coin Flips')
 
 
 
-![png](index_files/index_6_1.png)
+![png](index_files/index_15_1.png)
 
 
 or if you were trying to detect a only slightly unfair coin:
@@ -144,7 +190,7 @@ plt.xlabel('Number of Coin Flips')
 
 
 
-![png](index_files/index_8_1.png)
+![png](index_files/index_17_1.png)
 
 
 ## Summary
