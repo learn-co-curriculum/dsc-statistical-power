@@ -23,7 +23,6 @@ The power of a statistical test is defined as the probability of rejecting the n
 Intrinsically, this is related to $\beta$, the probability of type II errors. When designing a statistical test, a researcher will typically determine an acceptable $\alpha$, such as .05, the probability of type I errors. (Recall that type I errors are when the null-hypothesis is rejected when actually true.) From this given alpha value, an optimal threshold for rejecting the null-hypothesis can be determined. That is, for a given $\alpha$ value, you can calculate a threshold which maximizes the power of the test. For any given $\alpha$, $power = 1 - \beta$.
 
 
-
 > Note: Ideally, $\alpha$ and $\beta$ would both be minimized, but this is often costly, impracticle or impossible depending on the scenario and required sample sizes. 
 
 ## Effect Size
@@ -32,6 +31,7 @@ The effect size is the magnitude of the difference you are testing between the t
 $ d = \frac{m_1 - m_2}{s}$,  where m_1 and m_2 are the respective sample means and s is the (overall) standard deviation
 
 That is the difference of the means divided by the standard deviation.  
+
 
 ## Power Analysis
 
@@ -48,6 +48,12 @@ $ d = \frac{.55 - .5}{s}$
 
 Furthermore, since we are dealing with a binomial variable, the standard deviation of the sample should follow the formula $\sqrt{n\bullet p(1-p)}$.  
 So some potential effect size values for various scenarios might look like this:
+
+
+```python
+import numpy as np
+import pandas as pd
+```
 
 
 ```python
@@ -235,11 +241,19 @@ df
 
 
 
-While a bit long winded, you can see that realalistic effect sizes for this scenario could be anywhere from 0.05 (or lower) up to approximately .4. With that, here's how you could use statsmodels to do a power analysis of various experimental designs.
+While a bit long winded, you can see that realalistic effect sizes for this scenario could be anywhere from 0.05 (or lower) up to approximately .4.  
+
+Now that you have some parameter estimates for alpha $\alpha$ and the effect size, you can map subsequent relationships for the power and sample size. Again, this is because any 3 of these quantities (alpha, effect size, sample size and power) will determine the fourth.  
+
+As you've also seen, a common statistical test for comparing sample means is the T-test. Statsmodels has some convenient build in methods for calculating the power of a t-test and plotting power curves. Take a look:
 
 
 ```python
 from statsmodels.stats.power import TTestIndPower, TTestPower
+import matplotlib.pyplot as plt
+import seaborn as sns
+%matplotlib inline
+sns.set_style('darkgrid') #Nice background styling on plots
 ```
 
 
@@ -257,14 +271,167 @@ plt.show()
 ```
 
 
-![png](index_files/index_7_0.png)
+![png](index_files/index_8_0.png)
 
 
-As this should demonstrate, detecting small perturbances can be quite difficult!
+As this should demonstrate, detecting small perturbances can be quite difficult! 
+
+Similarly, just because a t-test has an incredibly small p-value doesn't neccessarily imply a strong statistical test. As is mentioned in the article *Using Effect Size - or Why the P Value Is Not Enough*, referenced below, using incredibly large sample sizes such as 22,000 can make even the most trivial effect size statistically significant. Realizing these reciprical relationships and considering all 4 parameters: alpha, effect size, sample size and power are all important when interpreting the results (such as the p-value) of a statistical test.
+
+In addition to plotting a full curve, you can also calculate specific values. Simply don't specify one of the four parameters.
+
+
+```python
+#Calculate power
+power_analysis.solve_power(effect_size=.2, nobs1=80, alpha=.05)
+```
+
+
+
+
+    0.24175778678474177
+
+
+
+
+```python
+#Calculate sample size required
+power_analysis.solve_power(effect_size=.2, alpha=.05, power=.8)
+```
+
+
+
+
+    393.4056989990335
+
+
+
+
+```python
+#Calculate minimum effect size to satisfy desired alpha and power as well as respect sample size limitations
+power_analysis.solve_power(nobs1=25, alpha=.05, power=.8)
+```
+
+
+
+
+    0.8087077886680412
+
+
+
+
+```python
+#Calculate alpha (less traditional)
+power_analysis.solve_power(nobs1=25, effect_size=.3, power=.8)
+```
+
+
+
+
+    0.6613634273431555
+
+
+
+You can also simulate your own data to verify results:
+
+
+```python
+import scipy.stats as stats
+def run_ttest_sim(p1, p2, std, nobs, alpha=0.05, n_sim=10**5):
+    """p1 and p2 are the underlying means probabilities for 2 normal variables
+    Samples will be generated using these parameters."""
+    #Calculate Normalized Effect Size
+    effect_size = np.abs(p1-p2)/std
+    
+    #Run a Simulation
+    # Initialize array to store results
+    p = (np.empty(n_sim))
+    p.fill(np.nan)
+
+    #  Run a for loop for range of values in n_sim
+    for s in range(n_sim):
+        control = np.random.normal(loc= p1, scale=std, size=nobs)
+        experimental = np.random.normal(loc= p2, scale=std, size=nobs)
+        t_test = stats.ttest_ind(control, experimental)
+        p[s] = t_test[1]
+    
+    num_null_rejects = np.sum(p < alpha)
+    power = num_null_rejects/n_sim
+    #Store results
+    stat_dict = {'alpha':alpha,
+                 'nobs':nobs,
+                 'effect_size':effect_size,
+                 'power': power}
+    return stat_dict
+
+run_ttest_sim(.5, .7, 1, 50)
+```
+
+
+
+
+    {'alpha': 0.05,
+     'nobs': 50,
+     'effect_size': 0.19999999999999996,
+     'power': 0.16719}
+
+
+
+And going back to the full stats model implementation for verification:
+
+
+```python
+power_analysis.solve_power(nobs1=50, effect_size=0.19999999999999996, alpha=0.05)
+```
+
+
+
+
+    0.1676754863454749
+
+
+
+
+```python
+power_analysis.solve_power(nobs1=50, effect_size=0.19999999999999996, power=0.16719)
+```
+
+
+
+
+    0.049779515826212185
+
+
+
+
+```python
+power_analysis.solve_power(nobs1=50, power=0.16719, alpha=0.05)
+```
+
+
+
+
+    0.19959710069445308
+
+
+
+
+```python
+power_analysis.solve_power(power=0.16719, effect_size=0.19999999999999996, alpha=0.05)
+```
+
+
+
+
+    49.80313313853301
+
+
 
 ## Additional Resources
 
 * [Stats Models Documentation](http://www.statsmodels.org/dev/generated/statsmodels.stats.power.TTestIndPower.html)
+* [Using Effect Size—or Why the P Value Is Not Enough](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3444174/)
+* [Understanding Statistical Power and Significance Testing - an interactive visualization](https://rpsychologist.com/d3/NHST/)
 
 ## Summary
 
