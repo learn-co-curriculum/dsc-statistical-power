@@ -18,12 +18,12 @@ You will be able to:
 
 ## The Power of a Statistical Test
 
-The power of a statistical test is defined as the probability of rejecting the null hypothesis, given that it is indeed false. As with any probability, the power of a statistical test therefore ranges from 0 to 1, with 1 being a perfect test that gaurantees rejecting the null hypothesis when it is indeed false.  
+The power of a statistical test is defined as the probability of rejecting the null hypothesis, given that it is indeed false. As with any probability, the power of a statistical test therefore ranges from 0 to 1, with 1 being a perfect test that guarantees rejecting the null hypothesis when it is indeed false.  
 
 Intrinsically, this is related to $\beta$, the probability of type II errors. When designing a statistical test, a researcher will typically determine an acceptable $\alpha$, such as .05, the probability of type I errors. (Recall that type I errors are when the null-hypothesis is rejected when actually true.) From this given alpha value, an optimal threshold for rejecting the null-hypothesis can be determined. That is, for a given $\alpha$ value, you can calculate a threshold which maximizes the power of the test. For any given $\alpha$, $power = 1 - \beta$.
 
 
-> Note: Ideally, $\alpha$ and $\beta$ would both be minimized, but this is often costly, impracticle or impossible depending on the scenario and required sample sizes. 
+> Note: Ideally, $\alpha$ and $\beta$ would both be minimized, but this is often costly, impractical or impossible depending on the scenario and required sample sizes. 
 
 ## Effect Size
 
@@ -35,11 +35,17 @@ That is the difference of the means divided by the standard deviation.
 
 ## Power Analysis
 
-Since $\alpha$, power, sample size and effect size are all related quantities, you can take a look at some plots of the power of some t-tests, given varying sample sizes. This will allow you to develop a deeper understanding of how these quantities are related and what constitutes a convincing statistical test.  
+Since $\alpha$, power, sample size and effect size are all related quantities, you can take a look at some plots of the power of some t-tests, given varying sample sizes. This will allow you to develop a deeper understanding of how these quantities are related and what constitutes a convincing statistical test. There are three things to go into the calculation of power for a test. They are:
 
-To start, imagine the scenario of detecting an unfair coin. With this, the null-hypothesis $H_0(heads) = 0.5$. From here, the power will depend on both the sample size and the effect size (that is the threshold for the alternative hypothesis). For example, if the alternative hypothesis has a large margin from the null-hypothesis such as $H_a(heads) = 0.8$, then the likelihood of rejecting the null-hypothesis is diminished; an unfair coin where $P(heads)=.6$ for example, is not apt to lead to the reject of the null-hypothesis in the current formulation.   
+* alpha value
+* effect size
+* sample size   
 
-To start, you might choose an alpha value based that you are willing to accept such as $\alpha=0.05$. From there, you could observe the power of various statistical test against various sample and effect sizes.  
+A fantastic visual representation of these values' effect on one another can be found on [Kristoffer Magnusson's website](https://rpsychologist.com/d3/NHST/).
+
+Let's look at how power might change in the context of varying effect size. To start, imagine the scenario of trying to detect whether or not a coin is fair. In this scenario, the null-hypothesis would be $H_0(heads) = 0.5$ because our assumption is that we are dealing with a fair coin. From here, the power will depend on both the sample size and the effect size (that is the threshold for the null hypothesis to be rejected). For example, if the alternative hypothesis has a large margin from the null-hypothesis such as $H_a(heads) = 0.8$ or $H_a(heads) = 0.9$ (large effect size), then there is a higher chance of rejecting the null-hypothesis (power is increased). If there is a smaller margin between the null hypothesis and an alternate hypothesis, an unfair coin where $P(heads)=.6$ for example (small effect size), there is a lower chance of rejecting the null hypothesis (power is reduced).
+
+To start, you might choose an alpha value that you are willing to accept such as $\alpha=0.05$. From there, you can observe the power of various statistical test against various sample and effect sizes.  
 
 For example, if we wish to state the alternative hypothesis $H_a = .55$, then the effect size (using Cohen's d) would be:
 
