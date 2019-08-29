@@ -282,7 +282,7 @@ plt.show()
 
 As this should demonstrate, detecting small perturbances can be quite difficult! 
 
-Similarly, just because a t-test has an incredibly small p-value doesn't neccessarily imply a strong statistical test. As is mentioned in the article *Using Effect Size - or Why the P Value Is Not Enough*, referenced below, using incredibly large sample sizes such as 22,000 can make even the most trivial effect size statistically significant. Realizing these reciprical relationships and considering all 4 parameters: alpha, effect size, sample size and power are all important when interpreting the results (such as the p-value) of a statistical test.
+Similarly, just because a t-test has an incredibly small p-value doesn't necessarily imply a strong statistical test. As is mentioned in the article *Using Effect Size - or Why the P Value Is Not Enough*, referenced below, using incredibly large sample sizes such as 22,000 can make even the most trivial effect size statistically significant. Realizing these reciprocal relationships and considering all 4 parameters: alpha, effect size, sample size and power are all important when interpreting the results (such as the p-value) of a statistical test.
 
 In addition to plotting a full curve, you can also calculate specific values. Simply don't specify one of the four parameters.
 
