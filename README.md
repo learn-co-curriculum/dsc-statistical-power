@@ -10,33 +10,35 @@ You've started to investigate hypothesis testing, p-values and their use for acc
 
 You will be able to:
 
-* Describe the concept of “Power” in relation to p-value and effect size for hypothesis testing
-* Understand and critically evaluate the factors influencing the power of an experiment
-* Perform Power calculation using SciPy and Python
-* Demonstrate the impact of sample size on statistical power using simulations
-* Demonstrate the combined effect of sample size and effect size on statistical power using simulations  
+- Define power in relation to p-value and the null hypothesis 
+- Describe the impact of sample size and effect size on power 
+- Perform power calculation using SciPy and Python 
+- Demonstrate the combined effect of sample size and effect size on statistical power using simulations 
 
-## The Power of a Statistical Test
+
+
+## The power of a statistical test
 
 The power of a statistical test is defined as the probability of rejecting the null hypothesis, given that it is indeed false. As with any probability, the power of a statistical test, therefore, ranges from 0 to 1, with 1 being a perfect test that guarantees rejecting the null hypothesis when it is indeed false. 
 
-Intrinsically, this is related to $\beta$, the probability of type II errors. When designing a statistical test, a researcher will typically determine an acceptable $\alpha$, such as .05, the probability of type I errors. (Recall that type I errors are when the null-hypothesis is rejected when actually true.) From this given alpha value, an optimal threshold for rejecting the null-hypothesis can be determined. That is, for a given $\alpha$ value, you can calculate a threshold that maximizes the power of the test. For any given $\alpha$, $power = 1 - \beta$.
+Intrinsically, this is related to $\beta$, the probability of type II errors. When designing a statistical test, a researcher will typically determine an acceptable $\alpha$, such as .05, the probability of type I errors. (Recall that type I errors are when the null-hypothesis is rejected when actually true.) From this given $\alpha$ value, an optimal threshold for rejecting the null-hypothesis can be determined. That is, for a given $\alpha$ value, you can calculate a threshold that maximizes the power of the test. For any given $\alpha$, $power = 1 - \beta$.
 
 
 > Note: Ideally, $\alpha$ and $\beta$ would both be minimized, but this is often costly, impractical or impossible depending on the scenario and required sample sizes. 
 
-## Effect Size
 
-The effect size is the magnitude of the difference you are testing between the two groups. Thus far, you've mainly been investigating the mean of a sample. For example, after flipping a coin n number of times, you've investigated using a t-test to determine whether the coin is a fair coin (p(heads)=0.5). To do this, you compare the mean of the sample to that of another sample, if comparing coins, or to a know theoretical distribution. Similarly, you might compare the mean income of a sample population to that of a census tract to determine if the populations are statistically different. In such cases, Cohen's D is typically the metric used as the effect size. 
+## Effect size
+
+The effect size is the magnitude of the difference you are testing between the two groups. Thus far, you've mainly been investigating the mean of a sample. For example, after flipping a coin n number of times, you've investigated using a t-test to determine whether the coin is a fair coin (p(heads)=0.5). To do this, you compared the mean of the sample to that of another sample, if comparing coins, or to a know theoretical distribution. Similarly, you might compare the mean income of a sample population to that of a census tract to determine if the populations are statistically different. In such cases, Cohen's D is typically the metric used as the effect size. 
 
 Cohen's D is defined as:  $ d = \frac{m_1 - m_2}{s}$,  where $m_1$ and $m_2$ are the respective sample means and s is the overall standard deviation of the samples. 
 
-* When looking at the difference of means of two populations, Cohen's D is equal to the difference of the sample means divided by the pooled standard deviation of the samples. The pooled standard deviation of the samples is the average spread of all data points in the two samples around their group mean.  
+> When looking at the difference of means of two populations, Cohen's D is equal to the difference of the sample means divided by the pooled standard deviation of the samples. The pooled standard deviation of the samples is the average spread of all data points in the two samples around their group mean.  
 
 
-## Power Analysis
+## Power analysis
 
-Since $\alpha$, power, sample size and effect size are all related quantities, you can take a look at some plots of the power of some t-tests, given varying sample sizes. This will allow you to develop a deeper understanding of how these quantities are related and what constitutes a convincing statistical test. There are three things to go into the calculation of power for a test. They are:
+Since $\alpha$, power, sample size, and effect size are all related quantities, you can take a look at some plots of the power of some t-tests, given varying sample sizes. This will allow you to develop a deeper understanding of how these quantities are related and what constitutes a convincing statistical test. There are three things to go into the calculation of power for a test. They are:
 
 * alpha value
 * effect size
@@ -48,7 +50,7 @@ Let's look at how power might change in the context of varying effect size. To s
 
 To start, you might choose an alpha value that you are willing to accept such as $\alpha=0.05$. From there, you can observe the power of various statistical tests against various sample and effect sizes.  
 
-For example, if we wish to state the alternative hypothesis $H_a = .55$, then the effect size (using Cohen's d) would be:
+For example, if we wish to state the alternative hypothesis $H_a = .55$, then the effect size (using Cohen's D) would be:
 
 $ d = \frac{m_1 - m_2}{s}$  
 $ d = \frac{.55 - .5}{s}$
@@ -72,11 +74,11 @@ for n in [10, 20, 50, 500]:
     std = np.sqrt(n*p*(1-p))
     d = (m1-m2)/std
     rows.append({'Effect_Size': d, 'STD': std, 'Num_observations': n})
-print('Hypothetical Effect sizes for p(heads)=.55 vs p(heads)=.5')
+print('Hypothetical effect sizes for p(heads)=.55 vs p(heads)=.5')
 pd.DataFrame(rows)
 ```
 
-    Hypothetical Effect sizes for p(heads)=.55 vs p(heads)=.5
+    Hypothetical effect sizes for p(heads)=.55 vs p(heads)=.5
 
 
 
@@ -150,7 +152,7 @@ for n in [10, 20, 50, 500]:
         d = (m1-m2)/std
         temp_dict[m1] = d
     rows[n] = temp_dict
-print('Hypothetical Effect Sizes for Various Alternative Hypotheses')
+print('Hypothetical effect sizes for various alternative hypotheses')
 df = pd.DataFrame.from_dict(rows, orient='index')
 # df.index = [10,20,50, 500]
 # df.index.name = 'Sample_Size'
@@ -158,7 +160,7 @@ df = pd.DataFrame.from_dict(rows, orient='index')
 df
 ```
 
-    Hypothetical Effect Sizes for Various Alternative Hypotheses
+    Hypothetical effect sizes for various alternative hypotheses
 
 
 
@@ -248,11 +250,11 @@ df
 
 
 
-While a bit long winded, you can see that realalistic effect sizes for this scenario could be anywhere from 0.05 (or lower) up to approximately .4.  
+While a bit long winded, you can see that realistic effect sizes for this scenario could be anywhere from 0.05 (or lower) up to approximately .4.  
 
-Now that you have some parameter estimates for alpha $\alpha$ and the effect size, you can map subsequent relationships for the power and sample size. Again, this is because any 3 of these quantities (alpha, effect size, sample size and power) will determine the fourth.  
+Now that you have some parameter estimates for $\alpha$ and the effect size, you can map subsequent relationships for the power and sample size. Again, this is because any three of these quantities (alpha, effect size, sample size and power) will determine the fourth.  
 
-As you've also seen, a common statistical test for comparing sample means is the T-test. Statsmodels has some convenient build in methods for calculating the power of a t-test and plotting power curves. Take a look:
+As you've also seen, a common statistical test for comparing sample means is the t-test. Statsmodels has some convenient build in functions for calculating the power of a t-test and plotting power curves. Take a look:
 
 
 ```python
@@ -260,7 +262,7 @@ from statsmodels.stats.power import TTestIndPower, TTestPower
 import matplotlib.pyplot as plt
 import seaborn as sns
 %matplotlib inline
-sns.set_style('darkgrid') #Nice background styling on plots
+sns.set_style('darkgrid') # Nice background styling on plots
 ```
 
 
@@ -270,7 +272,7 @@ power_analysis = TTestIndPower()
 
 
 ```python
-power_analysis.plot_power(dep_var="nobs",
+power_analysis.plot_power(dep_var='nobs',
                           nobs = np.array(range(5,1500)),
                           effect_size=np.array([.05, .1, .2,.3,.4,.5]),
                           alpha=0.05)
@@ -283,13 +285,13 @@ plt.show()
 
 As this should demonstrate, detecting small perturbances can be quite difficult! 
 
-Similarly, just because a t-test has an incredibly small p-value doesn't necessarily imply a strong statistical test. As is mentioned in the article *Using Effect Size - or Why the P Value Is Not Enough*, referenced below, using incredibly large sample sizes such as 22,000 can make even the most trivial effect size statistically significant. Realizing these reciprocal relationships and considering all 4 parameters: alpha, effect size, sample size and power are all important when interpreting the results (such as the p-value) of a statistical test.
+Similarly, just because a t-test has an incredibly small p-value doesn't necessarily imply a strong statistical test. As is mentioned in the article *Using Effect Size - or Why the P Value Is Not Enough*, referenced below, using incredibly large sample sizes such as 22,000 can make even the most trivial effect size statistically significant. Realizing these reciprocal relationships and considering all 4 parameters: alpha, effect size, sample size, and power are all important when interpreting the results (such as the p-value) of a statistical test.
 
 In addition to plotting a full curve, you can also calculate specific values. Simply don't specify one of the four parameters.
 
 
 ```python
-#Calculate power
+# Calculate power
 power_analysis.solve_power(effect_size=.2, nobs1=80, alpha=.05)
 ```
 
@@ -302,7 +304,7 @@ power_analysis.solve_power(effect_size=.2, nobs1=80, alpha=.05)
 
 
 ```python
-#Calculate sample size required
+# Calculate sample size required
 power_analysis.solve_power(effect_size=.2, alpha=.05, power=.8)
 ```
 
@@ -315,7 +317,7 @@ power_analysis.solve_power(effect_size=.2, alpha=.05, power=.8)
 
 
 ```python
-#Calculate minimum effect size to satisfy desired alpha and power as well as respect sample size limitations
+# Calculate minimum effect size to satisfy desired alpha and power as well as respect sample size limitations
 power_analysis.solve_power(nobs1=25, alpha=.05, power=.8)
 ```
 
@@ -328,7 +330,7 @@ power_analysis.solve_power(nobs1=25, alpha=.05, power=.8)
 
 
 ```python
-#Calculate alpha (less traditional)
+# Calculate alpha (less traditional)
 power_analysis.solve_power(nobs1=25, effect_size=.3, power=.8)
 ```
 
@@ -347,10 +349,10 @@ import scipy.stats as stats
 def run_ttest_sim(p1, p2, std, nobs, alpha=0.05, n_sim=10**5):
     """p1 and p2 are the underlying means probabilities for 2 normal variables
     Samples will be generated using these parameters."""
-    #Calculate Normalized Effect Size
+    # Calculate Normalized Effect Size
     effect_size = np.abs(p1-p2)/std
     
-    #Run a Simulation
+    # Run a Simulation
     # Initialize array to store results
     p = (np.empty(n_sim))
     p.fill(np.nan)
@@ -364,7 +366,7 @@ def run_ttest_sim(p1, p2, std, nobs, alpha=0.05, n_sim=10**5):
     
     num_null_rejects = np.sum(p < alpha)
     power = num_null_rejects/n_sim
-    #Store results
+    # Store results
     stat_dict = {'alpha':alpha,
                  'nobs':nobs,
                  'effect_size':effect_size,
@@ -380,7 +382,7 @@ run_ttest_sim(.5, .7, 1, 50)
     {'alpha': 0.05,
      'nobs': 50,
      'effect_size': 0.19999999999999996,
-     'power': 0.16719}
+     'power': 0.16879}
 
 
 
@@ -436,10 +438,10 @@ power_analysis.solve_power(power=0.16719, effect_size=0.19999999999999996, alpha
 
 ## Additional Resources
 
-* [Stats Models Documentation](http://www.statsmodels.org/dev/generated/statsmodels.stats.power.TTestIndPower.html)
+* [Statsmodels documentation](http://www.statsmodels.org/dev/generated/statsmodels.stats.power.TTestIndPower.html)
 * [Using Effect Size—or Why the P Value Is Not Enough](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3444174/)
 * [Understanding Statistical Power and Significance Testing - an interactive visualization](https://rpsychologist.com/d3/NHST/)
 
 ## Summary
 
-In this lesson, you learned about the idea of "statistical power" and how sample size, alpha and effect size impact the power of an experiment. Remember, the power of a statistical test is the probability of rejecting the null hypothesis when it is indeed false.
+In this lesson, you learned about the idea of "statistical power" and how sample size, alpha, and effect size impact the power of an experiment. Remember, the power of a statistical test is the probability of rejecting the null hypothesis when it is indeed false.
